@@ -28,16 +28,18 @@ class Soldier(pygame.sprite.Sprite):
         """Creates the different lists of images for animation"""
         walk_list = self.create_list_from_images("walk")
         jump_list = self.create_list_from_images("jump")
+        idle_list = self.create_list_from_images("idle")
 
         animation_dict = {'walking': walk_list,
-                          'jumping': jump_list}
+                          'jumping': jump_list,
+                          'idle': idle_list,}
         return animation_dict
 
     def create_state_dict(self):
         """Creates a dictionary of a Digimon's behavior states"""
         state_dict = {'walking': self.walking,
                       'jumping': self.jumping,
-                      'resting': self.resting}
+                      'idle': self.resting}
         return state_dict
 
     def walking(self):
@@ -60,8 +62,8 @@ class Soldier(pygame.sprite.Sprite):
 
 
     def resting(self):
-        """Called when Digimon is stationary"""
-        pass
+        self.image_list = self.animation_lists['idle']
+        self.image = self.animation()
 
 
     def animation(self):
@@ -99,4 +101,4 @@ class Soldier(pygame.sprite.Sprite):
             self.state = 'jumping'
             self.direction = 'down'
         else:
-            self.state = 'resting'
+            self.state = 'idle'
