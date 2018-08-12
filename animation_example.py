@@ -2,6 +2,7 @@ import sys, os
 import pygame
 from soldier import Soldier
 from cannon import Cannon
+from random import randint
 
 BACKGROUND = pygame.image.load('flapBG.png')
 BACKGROUND = pygame.transform.scale(BACKGROUND, (800, 600))
@@ -40,8 +41,9 @@ class Game(object):
     def create_cannon(self):
         """Creates a digimon to control"""
         sprite_group = pygame.sprite.Group()
-        cannon = Cannon(500, 100)
-        sprite_group.add(cannon)
+        for i in range(0, 4):
+            cannon = Cannon(randint(0, 200) + i * 150, 50)
+            sprite_group.add(cannon)
         return sprite_group
 
     def create_bullet(self):
