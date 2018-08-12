@@ -14,7 +14,11 @@ class Cannon(pygame.sprite.Sprite):
         self.timer = randint(0, 100)
         self.angle = 0
 
-    def update(self, soldier, bullet_group):
+    def update(self, soldier, bullet_group, keys):
+        if keys[pygame.K_RIGHT]:
+            self.rect.x -= 5
+        elif keys[pygame.K_LEFT]:
+            self.rect.x += 5
         angle = self.angle - math.atan2(soldier.rect.y - self.rect.y, soldier.rect.x - self.rect.x)
         self.image = pygame.transform.rotate(self.cannon_image, math.degrees(angle) + 180)
         if self.timer == 0:

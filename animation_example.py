@@ -68,8 +68,8 @@ class Game(object):
                 BACKGROUND_RECT.x = -800
 
             self.soldier_group.update(self.current_time, self.keys)
-            self.cannon_group.update(self.soldier, self.bullet_group)
-            self.bullet_group.update()
+            self.cannon_group.update(self.soldier, self.bullet_group, self.keys)
+            self.bullet_group.update(self.keys)
             self.screen.blit(BACKGROUND, (BACKGROUND_RECT.x, 0, 800, 600))
             self.soldier_group.draw(self.screen)
             self.cannon_group.draw(self.screen)
