@@ -11,10 +11,12 @@ BACKGROUND_RECT = BACKGROUND.get_rect()
 class Game(object):
     """Controls entire game"""
     def __init__(self):
+        self.soldier = Soldier(100, 400)
         self.screen = self.setup_pygame()
         self.screen_rect = self.screen.get_rect()
-        self.digimon_group = self.create_digimon()
+        self.soldier_group = self.create_digimon()
         self.cannon_group = self.create_cannon()
+        self.bullet_group = self.create_bullet()
         self.clock = pygame.time.Clock()
         self.fps = 60
         self.done = False
@@ -31,17 +33,19 @@ class Game(object):
         return screen
 
     def create_digimon(self):
-        """Creates a digimon to control"""
         sprite_group = pygame.sprite.Group()
-        digimon = Soldier(100, 400)
-        sprite_group.add(digimon)
+        sprite_group.add(self.soldier)
         return sprite_group
 
     def create_cannon(self):
         """Creates a digimon to control"""
         sprite_group = pygame.sprite.Group()
-        cannon = Cannon(500, 400)
+        cannon = Cannon(500, 100)
         sprite_group.add(cannon)
+        return sprite_group
+
+    def create_bullet(self):
+        sprite_group = pygame.sprite.Group()
         return sprite_group
 
 
@@ -50,10 +54,13 @@ class Game(object):
         while not self.done:
             self.current_time = pygame.time.get_ticks()
             self.keys = self.get_user_input()
-            self.digimon_group.update(self.current_time, self.keys)
+            self.soldier_group.update(self.current_time, self.keys)
+            self.cannon_group.update(self.soldier, self.bullet_group)
+            self.bullet_group.update()
             self.screen.blit(BACKGROUND, BACKGROUND_RECT)
-            self.digimon_group.draw(self.screen)
+            self.soldier_group.draw(self.screen)
             self.cannon_group.draw(self.screen)
+            self.bullet_group.draw(self.screen)
             pygame.display.update()
             self.clock.tick(self.fps)
 
