@@ -43,12 +43,6 @@ class Soldier(pygame.sprite.Sprite):
         return state_dict
 
     def walking(self):
-        """Called when Digimon is in a walking state"""
-        if self.direction == 'left':
-            self.x_vel = -5
-        else:
-            self.x_vel = 5
-
         self.image_list = self.animation_lists['walking']
         self.rect.x += self.x_vel
         self.image = self.animation()
@@ -57,7 +51,6 @@ class Soldier(pygame.sprite.Sprite):
     def jumping(self):
         """Called when Digimon is in a jumping state"""
         self.image_list = self.animation_lists['jumping']
-        self.rect.y += self.y_vel
         self.image = self.animation()
 
 

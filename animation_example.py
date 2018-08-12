@@ -5,14 +5,14 @@ from cannon import Cannon
 from random import randint
 
 BACKGROUND = pygame.image.load('flapBG.png')
-BACKGROUND = pygame.transform.scale(BACKGROUND, (800, 600))
+BACKGROUND = pygame.transform.scale(BACKGROUND, (1600, 600))
 BACKGROUND_RECT = BACKGROUND.get_rect()
 
 
 class Game(object):
     """Controls entire game"""
     def __init__(self):
-        self.soldier = Soldier(100, 400)
+        self.soldier = Soldier(400, 400)
         self.screen = self.setup_pygame()
         self.screen_rect = self.screen.get_rect()
         self.soldier_group = self.create_digimon()
@@ -22,6 +22,7 @@ class Game(object):
         self.fps = 60
         self.done = False
         self.current_time = 0.0
+        self.speed = 5
 
 
     def setup_pygame(self):
@@ -56,10 +57,20 @@ class Game(object):
         while not self.done:
             self.current_time = pygame.time.get_ticks()
             self.keys = self.get_user_input()
+
+            if self.keys[pygame.K_RIGHT]:
+                BACKGROUND_RECT.x -= self.speed
+            elif self.keys[pygame.K_LEFT]:
+                BACKGROUND_RECT.x += self.speed
+            if BACKGROUND_RECT.x < -800:
+                BACKGROUND_RECT.x = 0
+            elif BACKGROUND_RECT.x > 0:
+                BACKGROUND_RECT.x = -800
+
             self.soldier_group.update(self.current_time, self.keys)
             self.cannon_group.update(self.soldier, self.bullet_group)
             self.bullet_group.update()
-            self.screen.blit(BACKGROUND, BACKGROUND_RECT)
+            self.screen.blit(BACKGROUND, (BACKGROUND_RECT.x, 0, 800, 600))
             self.soldier_group.draw(self.screen)
             self.cannon_group.draw(self.screen)
             self.bullet_group.draw(self.screen)
