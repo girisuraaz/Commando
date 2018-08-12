@@ -1,5 +1,6 @@
 import sys, os
 import pygame
+import glob
 
 RED = (255, 0, 0)
 GREEN = (12, 255, 0)
@@ -11,11 +12,10 @@ BACKGROUND = pygame.image.load('flapBG.png')
 BACKGROUND = pygame.transform.scale(BACKGROUND, (800, 600))
 BACKGROUND_RECT = BACKGROUND.get_rect()
 
-class Digimon(pygame.sprite.Sprite):
+class Soldier(pygame.sprite.Sprite):
     """Sprite player controls"""
     def __init__(self, startx, starty):
-        super(Digimon, self).__init__()
-        self.image_dict = self.create_image_dict()
+        super(Soldier, self).__init__()
         self.animation_lists = self.create_animation_lists()
         self.image_list = self.animation_lists['walking']
         self.image_index = 0
@@ -27,50 +27,29 @@ class Digimon(pygame.sprite.Sprite):
         self.y_vel = 0
         self.timer = 0.0
 
-
-    def create_image_dict(self):
-        """Creates a dictionary for all images"""
-        size = (20, 20)
-
-        walk1 = pygame.Surface(size).convert()
-        walk1.fill(RED)
-        walk2 = pygame.Surface(size).convert()
-        walk2.fill(GREEN)
-        jump1 = pygame.Surface(size).convert()
-        jump1.fill(BLUE)
-        jump2 = pygame.Surface(size).convert()
-        jump2.fill(ORANGE)
-
-
-        image_dict = {'walk1': walk1,
-                      'walk2': walk2,
-                      'jump1': jump1,
-                      'jump2': jump2}
-
-        return image_dict
-
+    def create_list_from_images(self, type):
+        # LOADING IMAGES
+        image_list = []
+        for filename in glob.glob('sprites/' + type + '/*.png'):
+            im = pygame.image.load(filename)
+            image_list.append(im)
+        return image_list
 
     def create_animation_lists(self):
         """Creates the different lists of images for animation"""
-        image_dict = self.image_dict
-
-        walk_list = [image_dict['walk1'], image_dict['walk2']]
-        jump_list = [image_dict['jump1'], image_dict['jump2']]
+        walk_list = self.create_list_from_images("walk")
+        jump_list = self.create_list_from_images("jump")
 
         animation_dict = {'walking': walk_list,
                           'jumping': jump_list}
-
         return animation_dict
-
 
     def create_state_dict(self):
         """Creates a dictionary of a Digimon's behavior states"""
         state_dict = {'walking': self.walking,
                       'jumping': self.jumping,
                       'resting': self.resting}
-
         return state_dict
-
 
     def walking(self):
         """Called when Digimon is in a walking state"""
@@ -86,11 +65,6 @@ class Digimon(pygame.sprite.Sprite):
 
     def jumping(self):
         """Called when Digimon is in a jumping state"""
-        if self.direction == 'up':
-            self.y_vel = -5
-        else:
-            self.y_vel = 5
-
         self.image_list = self.animation_lists['jumping']
         self.rect.y += self.y_vel
         self.image = self.animation()
@@ -103,7 +77,7 @@ class Digimon(pygame.sprite.Sprite):
 
     def animation(self):
         """Animates the Digimon"""
-        if (self.current_time - self.timer) > 200:
+        if (self.current_time - self.timer) > 50:
             if self.image_index < (len(self.image_list) - 1):
                 self.image_index += 1
             else:
@@ -164,7 +138,7 @@ class Game(object):
     def create_digimon(self):
         """Creates a digimon to control"""
         sprite_group = pygame.sprite.Group()
-        digimon = Digimon(100, 500)
+        digimon = Soldier(100, 500)
         sprite_group.add(digimon)
 
         return sprite_group
