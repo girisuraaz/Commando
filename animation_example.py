@@ -2,12 +2,6 @@ import sys, os
 import pygame
 import glob
 
-RED = (255, 0, 0)
-GREEN = (12, 255, 0)
-BLUE = (18, 0, 255)
-ORANGE = (255, 186, 0)
-SKYBLUE = (39, 145, 251)
-
 BACKGROUND = pygame.image.load('flapBG.png')
 BACKGROUND = pygame.transform.scale(BACKGROUND, (800, 600))
 BACKGROUND_RECT = BACKGROUND.get_rect()
