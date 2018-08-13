@@ -13,7 +13,9 @@ class Game(object):
     """Controls entire game"""
     def __init__(self):
         self.soldier = Soldier(400, 400)
+        self.health = 100
         self.screen = self.setup_pygame()
+        self.font = self.setup_font()
         self.screen_rect = self.screen.get_rect()
         self.soldier_group = self.create_digimon()
         self.cannon_group = self.create_cannon()
@@ -29,10 +31,19 @@ class Game(object):
         """Initializes pygame and produces a surface to blit on"""
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.init()
+        pygame.font.init()
         pygame.display.set_caption('Commando')
         screen = pygame.display.set_mode((800, 600))
 
         return screen
+
+    def setup_font(self):
+        myfont = pygame.font.SysFont('Comic Sans MS', 30)
+        return myfont
+
+    def update_text(self):
+        textsurface = self.font.render('Health : ' + str(self.health), False, (0, 0, 0))
+        return textsurface
 
     def create_digimon(self):
         sprite_group = pygame.sprite.Group()
@@ -55,6 +66,7 @@ class Game(object):
     def update(self):
         """Updates entire game"""
         while not self.done:
+            # GAME LOGIC
             self.current_time = pygame.time.get_ticks()
             self.keys = self.get_user_input()
 
@@ -67,6 +79,10 @@ class Game(object):
             elif BACKGROUND_RECT.x > 0:
                 BACKGROUND_RECT.x = -800
 
+            for bullet in pygame.sprite.spritecollide(self.soldier, self.bullet_group, 1):
+                self.health -= 5
+
+            # FRAME UPDATES
             self.soldier_group.update(self.current_time, self.keys)
             self.cannon_group.update(self.soldier, self.bullet_group, self.keys)
             self.bullet_group.update(self.keys)
@@ -74,6 +90,7 @@ class Game(object):
             self.soldier_group.draw(self.screen)
             self.cannon_group.draw(self.screen)
             self.bullet_group.draw(self.screen)
+            self.screen.blit(self.update_text(), (0, 0))
             pygame.display.update()
             self.clock.tick(self.fps)
 

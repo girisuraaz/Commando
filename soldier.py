@@ -44,7 +44,6 @@ class Soldier(pygame.sprite.Sprite):
 
     def walking(self):
         self.image_list = self.animation_lists['walking']
-        self.rect.x += self.x_vel
         self.image = self.animation()
 
 
