@@ -82,10 +82,13 @@ class Game(object):
             for bullet in pygame.sprite.spritecollide(self.soldier, self.bullet_group, 1):
                 self.health -= 5
 
+            if self.health <= 0:
+                sys.exit(0)
+
             # FRAME UPDATES
             self.soldier_group.update(self.current_time, self.keys)
             self.cannon_group.update(self.soldier, self.bullet_group, self.keys)
-            self.bullet_group.update(self.keys)
+            self.bullet_group.update(self.keys, self.bullet_group)
             self.screen.blit(BACKGROUND, (BACKGROUND_RECT.x, 0, 800, 600))
             self.soldier_group.draw(self.screen)
             self.cannon_group.draw(self.screen)

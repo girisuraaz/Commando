@@ -16,10 +16,16 @@ class Bullet(pygame.sprite.Sprite):
         self.speed_x = 5 * math.cos(angle)
         self.speed_y = 5 * math.sin(angle)
 
-    def update(self, keys):
+    def update(self, keys, bullet_group):
         if keys[pygame.K_RIGHT]:
             self.rect.x -= 5
         elif keys[pygame.K_LEFT]:
             self.rect.x += 5
         self.rect.x += self.speed_x
         self.rect.y -= self.speed_y
+        if self.rect.y > 600:
+            self.remove(bullet_group)
+            self.kill()
+
+
+

@@ -19,12 +19,13 @@ class Cannon(pygame.sprite.Sprite):
             self.rect.x -= 5
         elif keys[pygame.K_LEFT]:
             self.rect.x += 5
-        angle = self.angle - math.atan2(soldier.rect.y - self.rect.y, soldier.rect.x - self.rect.x)
-        self.image = pygame.transform.rotate(self.cannon_image, math.degrees(angle) + 180)
-        if self.timer == 0:
-            bullet = Bullet(self.rect.x, self.rect.y + 25, soldier.rect.centerx, soldier.rect.centery)
-            bullet_group.add(bullet)
-        self.timer -= 1
-        if self.timer < 0:
-            self.timer = randint(50, 150)
+        if abs(soldier.rect.x - self.rect.x) < 1000:
+            angle = self.angle - math.atan2(soldier.rect.y - self.rect.y, soldier.rect.x - self.rect.x)
+            self.image = pygame.transform.rotate(self.cannon_image, math.degrees(angle) + 180)
+            if self.timer == 0:
+                bullet = Bullet(self.rect.x, self.rect.y + 25, soldier.rect.centerx, soldier.rect.centery)
+                bullet_group.add(bullet)
+            self.timer -= 1
+            if self.timer < 0:
+                self.timer = randint(50, 150)
 
