@@ -1,6 +1,8 @@
 import pygame
 import math
+import glob
 from random import randint
+
 
 from bullet import Bullet
 
@@ -38,13 +40,13 @@ class Enemy(pygame.sprite.Sprite):
         shoot_list = self.create_list_from_images("shoot")
 
         animation_dict = {'walking': walk_list,
-                          'shooting': shoot_list,
+                          'shooting': shoot_list,}
         return animation_dict
 
     def create_state_dict(self):
         """Creates a dictionary of a Digimon's behavior states"""
         state_dict = {'walking': self.walking,
-                      'shooting': self.shoot,
+                      'shooting': self.shoot,}
         return state_dict
 
 
@@ -69,4 +71,3 @@ class Enemy(pygame.sprite.Sprite):
 
         return self.image_list[self.image_index]
 
-    
