@@ -1,5 +1,6 @@
 import pygame
 import glob
+from bullet import Bullet
 
 class Soldier(pygame.sprite.Sprite):
     """Sprite player controls"""
@@ -15,6 +16,7 @@ class Soldier(pygame.sprite.Sprite):
         self.x_vel = 0
         self.y_vel = 0
         self.timer = 0.0
+        self.bullet_reload = 0
 
     def create_list_from_images(self, location):
         # LOADING IMAGES
@@ -70,8 +72,16 @@ class Soldier(pygame.sprite.Sprite):
         return self.image_list[self.image_index]
 
 
-    def update(self, current_time, keys):
+    def update(self, current_time, keys, player_bullet_group):
         """Updates Digimon state"""
+        if pygame.mouse.get_pressed()[0]:
+            if self.bullet_reload <= 0:
+                bullet = Bullet(self.rect.x, self.rect.y + 25, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
+                player_bullet_group.add(bullet)
+                self.bullet_reload = 20
+        self.bullet_reload -= 1
+
+
         self.current_time = current_time
         self.handle_input(keys)
         state_function = self.state_dict[self.state]
