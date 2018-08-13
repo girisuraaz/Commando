@@ -55,7 +55,7 @@ class Game(object):
         """Creates a digimon to control"""
         sprite_group = pygame.sprite.Group()
         for i in range(0, 4):
-            cannon = Cannon(randint(0, 200) + i * 150, 50)
+            cannon = Cannon(randint(0, 1000) + i * 1500, 50)
             sprite_group.add(cannon)
         return sprite_group
 
