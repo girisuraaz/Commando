@@ -83,6 +83,10 @@ class Game(object):
             for bullet in pygame.sprite.spritecollide(self.soldier, self.bullet_group, 1):
                 self.health -= 5
 
+            for bullet in self.player_bullet_group:
+                for cannon in pygame.sprite.spritecollide(bullet, self.cannon_group, 1):
+                    pass
+
             if self.health <= 0:
                 print("GAME OVER!")
                 sys.exit(0)

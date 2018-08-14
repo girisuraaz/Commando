@@ -21,7 +21,7 @@ class Soldier(pygame.sprite.Sprite):
     def create_list_from_images(self, location):
         # LOADING IMAGES
         image_list = []
-        for filename in glob.glob('sprites/' + 'commando/' + location + '/*.png'):
+        for filename in glob.glob('sprites/' + location + '/*.png'):
             im = pygame.image.load(filename)
             image_list.append(im)
         return image_list
