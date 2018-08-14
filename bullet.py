@@ -13,9 +13,8 @@ class Bullet(pygame.sprite.Sprite):
         self.target_x = end_x
         self.target_y = end_y
         angle = self.angle - math.atan2(end_y - start_y, end_x - start_x)
-        print(angle)
-        self.speed_x = 5 * math.cos(angle)
-        self.speed_y = 5 * math.sin(angle)
+        self.speed_x = 7 * math.cos(angle)
+        self.speed_y = 7 * math.sin(angle)
 
     def update(self, keys, bullet_group):
         if keys[pygame.K_RIGHT]:

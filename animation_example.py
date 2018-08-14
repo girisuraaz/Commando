@@ -96,7 +96,7 @@ class Game(object):
                 sys.exit(0)
 
             # create enemy random
-            if randint(0, 500) == 0:
+            if randint(0, 300) == 0:
                 if randint(0, 1) == 0:
                     self.enemy_group.add(Enemy(900, 400))
                 else:

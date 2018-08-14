@@ -19,6 +19,9 @@ class Soldier(pygame.sprite.Sprite):
         self.y_vel = 0
         self.timer = 0.0
         self.bullet_reload = 0
+        self.jump = False
+        self.jump_velocity = 20
+        self.jump_current_velocity = self.jump_velocity
 
     def create_list_from_images(self, location):
         # LOADING IMAGES
@@ -71,6 +74,14 @@ class Soldier(pygame.sprite.Sprite):
         return self.image_list[self.image_index]
 
     def update(self, current_time, keys, player_bullet_group):
+        if self.rect.y > 400:
+            self.jump = False
+            self.jump_current_velocity = self.jump_velocity
+            self.rect.y = 400
+        if self.jump:
+            self.rect.y -= self.jump_current_velocity
+            self.jump_current_velocity -= 1
+
         """Updates Digimon state"""
         if pygame.mouse.get_pressed()[0]:
             if self.bullet_reload <= 0:
@@ -80,13 +91,15 @@ class Soldier(pygame.sprite.Sprite):
         self.bullet_reload -= 1
 
         self.current_time = current_time
-        self.handle_input(keys)
+        if not self.jump:
+            self.handle_input(keys)
         state_function = self.state_dict[self.state]
         state_function()
 
     def handle_input(self, keys):
         """Handle's user input"""
         if keys[pygame.K_UP]:
+            self.jump = True
             self.state = 'jumping'
             self.direction = 'up'
         elif keys[pygame.K_RIGHT]:
@@ -95,8 +108,5 @@ class Soldier(pygame.sprite.Sprite):
         elif keys[pygame.K_LEFT]:
             self.state = 'walking'
             self.direction = 'left'
-        elif keys[pygame.K_DOWN]:
-            self.state = 'jumping'
-            self.direction = 'down'
         else:
             self.state = 'idle'
