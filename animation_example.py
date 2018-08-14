@@ -3,6 +3,7 @@ import pygame
 from soldier import Soldier
 from cannon import Cannon
 from random import randint
+from enemy import Enemy
 
 BACKGROUND = pygame.image.load('flapBG.png')
 BACKGROUND = pygame.transform.scale(BACKGROUND, (1600, 600))
@@ -18,6 +19,7 @@ class Game(object):
         self.font = self.setup_font()
         self.screen_rect = self.screen.get_rect()
         self.soldier_group = self.create_digimon()
+        self.enemy_group = self.create_bullet()
         self.cannon_group = self.create_cannon()
         self.bullet_group = self.create_bullet()
         self.player_bullet_group = self.create_bullet()
@@ -86,18 +88,30 @@ class Game(object):
             for bullet in self.player_bullet_group:
                 for cannon in pygame.sprite.spritecollide(bullet, self.cannon_group, 1):
                     pass
+                for enemy in pygame.sprite.spritecollide(bullet, self.enemy_group, 1):
+                    pass
 
             if self.health <= 0:
                 print("GAME OVER!")
                 sys.exit(0)
 
+            # create enemy random
+            if randint(0, 500) == 0:
+                if randint(0, 1) == 0:
+                    self.enemy_group.add(Enemy(900, 400))
+                else:
+                    self.enemy_group.add(Enemy(-100, 400))
+
+
             # FRAME UPDATES
             self.soldier_group.update(self.current_time, self.keys, self.player_bullet_group)
+            self.enemy_group.update(self.current_time, self.soldier, self.enemy_group, self.bullet_group, self.keys)
             self.cannon_group.update(self.soldier, self.bullet_group, self.keys)
             self.bullet_group.update(self.keys, self.bullet_group)
             self.player_bullet_group.update(self.keys, self.player_bullet_group)
             self.screen.blit(BACKGROUND, (BACKGROUND_RECT.x, 0, 800, 600))
             self.soldier_group.draw(self.screen)
+            self.enemy_group.draw(self.screen)
             self.cannon_group.draw(self.screen)
             self.bullet_group.draw(self.screen)
             self.player_bullet_group.draw(self.screen)

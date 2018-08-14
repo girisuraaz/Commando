@@ -2,8 +2,10 @@ import pygame
 import glob
 from bullet import Bullet
 
+
 class Soldier(pygame.sprite.Sprite):
     """Sprite player controls"""
+
     def __init__(self, startx, starty):
         super(Soldier, self).__init__()
         self.animation_lists = self.create_animation_lists()
@@ -12,7 +14,7 @@ class Soldier(pygame.sprite.Sprite):
         self.image = self.image_list[self.image_index]
         self.rect = self.image.get_rect(x=startx, y=starty)
         self.state_dict = self.create_state_dict()
-        self.state = 'resting'
+        self.state = 'idle'
         self.x_vel = 0
         self.y_vel = 0
         self.timer = 0.0
@@ -34,7 +36,7 @@ class Soldier(pygame.sprite.Sprite):
 
         animation_dict = {'walking': walk_list,
                           'jumping': jump_list,
-                          'idle': idle_list,}
+                          'idle': idle_list, }
         return animation_dict
 
     def create_state_dict(self):
@@ -48,17 +50,14 @@ class Soldier(pygame.sprite.Sprite):
         self.image_list = self.animation_lists['walking']
         self.image = self.animation()
 
-
     def jumping(self):
         """Called when Digimon is in a jumping state"""
         self.image_list = self.animation_lists['jumping']
         self.image = self.animation()
 
-
     def resting(self):
         self.image_list = self.animation_lists['idle']
         self.image = self.animation()
-
 
     def animation(self):
         """Animates the Digimon"""
@@ -71,7 +70,6 @@ class Soldier(pygame.sprite.Sprite):
 
         return self.image_list[self.image_index]
 
-
     def update(self, current_time, keys, player_bullet_group):
         """Updates Digimon state"""
         if pygame.mouse.get_pressed()[0]:
@@ -81,12 +79,10 @@ class Soldier(pygame.sprite.Sprite):
                 self.bullet_reload = 20
         self.bullet_reload -= 1
 
-
         self.current_time = current_time
         self.handle_input(keys)
         state_function = self.state_dict[self.state]
         state_function()
-
 
     def handle_input(self, keys):
         """Handle's user input"""
