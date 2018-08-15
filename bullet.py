@@ -23,7 +23,7 @@ class Bullet(pygame.sprite.Sprite):
             self.rect.x += 5
         self.rect.x += self.speed_x
         self.rect.y -= self.speed_y
-        if self.rect.y > 600 or self.rect.y<50:
+        if self.rect.y > 600 or self.rect.y < 50:
             self.remove(bullet_group)
             self.kill()
 

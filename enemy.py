@@ -93,12 +93,20 @@ class Enemy(pygame.sprite.Sprite):
         if abs(self.rect.x - 600) > abs(self.rect.x - 200):
             if self.rect.x > 200:
                 self.rect.x -= 6
+                if self.rect.x < 200:
+                    self.rect.x = 200
             else:
                 self.rect.x += 6
+                if self.rect.x > 200:
+                    self.rect.x = 200
         else:
             if self.rect.x > 600:
                 self.rect.x -= 6
+                if self.rect.x < 600:
+                    self.rect.x = 600
             else:
                 self.rect.x += 6
+                if self.rect.x > 600:
+                    self.rect.x = 600
         # else:
         #     self.state = 'idle'
