@@ -4,7 +4,21 @@ from bullet import Bullet
 
 
 class Enemy(pygame.sprite.Sprite):
-    """Sprite player controls"""
+    walk_list = []
+    jump_list = []
+    idle_list = []
+
+    ani_list = [walk_list, jump_list, idle_list]
+
+    lists = {0: "walk",
+             1: "jump",
+             2: "idle"}
+
+    for k, v in lists.items():
+        for filename in glob.glob('sprites/enemy/' + v + '/*.png'):
+            im = pygame.image.load(filename)
+            im = pygame.transform.scale(im, (60, 100))
+            ani_list[k].append(im)
 
     def __init__(self, startx, starty):
         super(Enemy, self).__init__()
@@ -20,23 +34,12 @@ class Enemy(pygame.sprite.Sprite):
         self.timer = 0.0
         self.bullet_reload = 0
 
-    def create_list_from_images(self, location):
-        # LOADING IMAGES
-        image_list = []
-        for filename in glob.glob('sprites/' + location + '/*.png'):
-            im = pygame.image.load(filename)
-            image_list.append(im)
-        return image_list
-
     def create_animation_lists(self):
         """Creates the different lists of images for animation"""
-        walk_list = self.create_list_from_images("walk")
-        jump_list = self.create_list_from_images("jump")
-        idle_list = self.create_list_from_images("idle")
 
-        animation_dict = {'walking': walk_list,
-                          'jumping': jump_list,
-                          'idle': idle_list, }
+        animation_dict = {'walking': Enemy.walk_list,
+                          'jumping': Enemy.jump_list,
+                          'idle': Enemy.idle_list, }
         return animation_dict
 
     def create_state_dict(self):

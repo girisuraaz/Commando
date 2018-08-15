@@ -26,7 +26,7 @@ class Soldier(pygame.sprite.Sprite):
     def create_list_from_images(self, location):
         # LOADING IMAGES
         image_list = []
-        for filename in glob.glob('sprites/' + location + '/*.png'):
+        for filename in glob.glob('sprites/commando/' + location + '/*.png'):
             im = pygame.image.load(filename)
             image_list.append(im)
         return image_list
@@ -98,7 +98,7 @@ class Soldier(pygame.sprite.Sprite):
 
     def handle_input(self, keys):
         """Handle's user input"""
-        if keys[pygame.K_UP]:
+        if keys[pygame.K_SPACE]:
             self.jump = True
             self.state = 'jumping'
             self.direction = 'up'
